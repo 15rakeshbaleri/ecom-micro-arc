@@ -1,0 +1,42 @@
+package inventory_service.controller;
+
+import inventory_service.DTO.BaseResponse;
+import inventory_service.service.InventoryService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+@Slf4j
+@RestController
+@RequestMapping("/api/inventory")
+public class InventoryController {
+
+    @Autowired
+    private InventoryService inventoryService;
+
+    @GetMapping("/status/{skuCode}")
+    public ResponseEntity<BaseResponse> getInventoryStatus(@PathVariable("skuCode") String skuCode,
+                                                           @RequestParam("quantity") int quantity) {
+        boolean quantity_check = inventoryService.checkInventory(skuCode, quantity);
+
+        Map<String, Object> responseData = new HashMap<>();
+        responseData.put("isInStock", quantity_check); // ✅ Use a meaningful name for a boolean field
+
+
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.Status = "Success";
+        baseResponse.messageType = "Inventory Status";
+        baseResponse.message = "Inventory status retrieved successfully";
+        baseResponse.timeStamp = new Date();
+        baseResponse.data = responseData;
+
+        return ResponseEntity.ok(baseResponse);
+    }
+
+}

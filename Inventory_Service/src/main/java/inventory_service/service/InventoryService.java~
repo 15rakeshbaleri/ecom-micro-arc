@@ -1,0 +1,58 @@
+package inventory_service.service;
+
+import inventory_service.model.Inventory;
+import inventory_service.repository.InventoryRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Slf4j
+@Service
+public class InventoryService {
+
+    @Autowired
+    private InventoryRepository inventoryRepository;
+
+    @Transactional (readOnly = true)// read only transaction
+    public boolean checkInventory(String skuCode, int quantity) {
+        int availableQuantity = 0;
+        Inventory inventory = inventoryRepository.findBySkuCode(skuCode);
+        if (inventory != null) {
+            availableQuantity= inventory.getQuantity();
+            if (availableQuantity >= quantity) {
+                log.info("Inventory check for SKU {}: Available quantity is sufficient", skuCode);
+                return true;
+            } else {
+                log.warn("Inventory check for SKU {}: Insufficient quantity", skuCode);
+                return false;
+            }
+        }
+        log.warn("Inventory check for SKU {}: SKU not found", skuCode);
+            return false;
+
+    }
+    @Transactional
+    public void reserveInventory(String skuCode, int quantity) {
+        Inventory inventory = inventoryRepository.findBySkuCode(skuCode);
+
+        if (inventory == null) {
+            log.error("Cannot reserve inventory: SKU {} not found", skuCode);
+            throw new RuntimeException("SKU " + skuCode + " not found in inventory");
+        }
+
+        int availableQuantity = inventory.getQuantity();
+
+        if (availableQuantity < quantity) {
+            log.warn("Cannot reserve inventory: Not enough stock for SKU {} (requested: {}, available: {})",
+                    skuCode, quantity, availableQuantity);
+            throw new RuntimeException("Insufficient stock for SKU: " + skuCode);
+        }
+
+        inventory.setQuantity(availableQuantity - quantity);
+        inventoryRepository.save(inventory);
+
+        log.info("Reserved {} units of SKU {}. Remaining: {}", quantity, skuCode, inventory.getQuantity());
+    }
+
+}

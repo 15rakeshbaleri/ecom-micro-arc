@@ -1,0 +1,21 @@
+package order_service.dto;
+
+import jakarta.persistence.Temporal;
+import lombok.Data;
+
+import java.util.Date;
+import java.util.Map;
+
+import static jakarta.persistence.TemporalType.TIMESTAMP;
+
+@Data
+public class BaseResponse {
+    public String Status;
+    public String messageType;
+    public String message;
+    @Temporal(TIMESTAMP)
+    public Date timeStamp;
+    public Map<String, Object> data;
+
+
+}

@@ -1,0 +1,47 @@
+package order_service.controller;
+
+import lombok.extern.slf4j.Slf4j;
+import order_service.dto.BaseResponse;
+import order_service.dto.OrderRequest;
+import order_service.model.Order;
+import order_service.service.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.logging.Logger;
+
+@Slf4j
+@RestController
+@RequestMapping("/api/orders")
+public class OrderController {
+
+    @Autowired
+    private OrderService orderService;
+
+    @PostMapping("/place")
+    public ResponseEntity<BaseResponse> placeOrder(@RequestBody OrderRequest orderRequest) {
+        Order order = orderService.placeOrder(orderRequest);
+
+        if (order != null) {
+            Logger.getLogger(OrderController.class.getName()).info("Order placed successfully: " + order);
+
+            BaseResponse successResponse = new BaseResponse();
+            successResponse.setStatus("success");
+            successResponse.setMessage("Order placed successfully");
+            successResponse.setTimeStamp(new java.util.Date());
+            
+            successResponse.setData(order);
+
+            return new ResponseEntity<>(successResponse, HttpStatus.CREATED);
+        } else {
+            BaseResponse errorResponse = new BaseResponse();
+            errorResponse.setStatus("error");
+            errorResponse.setMessage("One or more items are out of stock. Order not placed.");
+            errorResponse.setData("product not available");
+
+            return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+        }
+    }
+}
