@@ -1,0 +1,16 @@
+package com.ecom.microservices.product_service.Client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@FeignClient(name = "inventory-service", url = "${inventory.url}")
+public interface InventoryFeignClient {
+
+    @GetMapping("/api/inventory/update")
+    ResponseEntity<String> addOrUpdateInventory();
+
+
+}

@@ -1,66 +1,82 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- Specifies the version of the POM model being used -->
     <modelVersion>4.0.0</modelVersion>
 
+    <!-- Inherit common configuration from the parent multi-module project -->
     <parent>
         <groupId>org.example</groupId>
         <artifactId>ecomm-micro</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
 
+    <!-- Unique identifier for this module -->
     <artifactId>productService</artifactId>
 
+    <!-- Java version and encoding settings -->
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>21</maven.compiler.source> <!-- Java source version -->
+        <maven.compiler.target>21</maven.compiler.target> <!-- Java target version -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- Encoding standard -->
     </properties>
 
     <dependencies>
-        <!-- Required to use @SpringBootApplication -->
+        <!-- Core Spring Boot starter, includes auto-configuration, logging, and Spring context -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- Optional: for creating REST APIs -->
+        <!-- Web starter for building REST APIs with Spring MVC -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!-- Spring Data MongoDB -->
+
+        <!-- Enables integration with MongoDB using Spring Data -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
         </dependency>
+
+        <!-- Provides Spring Boot testing support including JUnit, Mockito, and assert libraries -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <!-- RestAssured -->
+        <!-- RestAssured library for writing expressive REST API tests -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>5.4.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- JSONPath support for RestAssured tests -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>json-path</artifactId>
             <version>5.4.0</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- XMLPath support for RestAssured tests -->
         <dependency>
             <groupId>io.rest-assured</groupId>
             <artifactId>xml-path</artifactId>
             <version>5.4.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
 
-        <!-- Testcontainers for MongoDB -->
+        <!-- Testcontainers: Provides lightweight, throwaway instances of MongoDB for integration testing -->
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mongodb</artifactId>
@@ -68,7 +84,14 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JUnit 5 (already included in Spring Boot Starter Test, but explicit here for clarity) -->
+        <!-- Springdoc OpenAPI UI support for Swagger documentation at /swagger-ui.html -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+
+        <!-- JUnit 5 testing framework (already included in spring-boot-starter-test but added explicitly for clarity) -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -76,33 +99,40 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Spring Boot Validation Starter -->
+        <!-- Validation support using javax.validation (e.g., @Valid, @NotNull) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
+        <!-- Swagger core dependency for additional OpenAPI support -->
         <dependency>
             <groupId>io.swagger.core.v3</groupId>
             <artifactId>swagger-core</artifactId>
             <version>2.2.11</version>
         </dependency>
-        <!-- Optional: for using Spring Data JPA -->
 
-
-        <!-- Optional: for using Spring lombok -->
+        <!-- Lombok helps to reduce boilerplate code (e.g., getters/setters) -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
-            <scope>provided</scope>
+            <scope>provided</scope> <!-- Only required at compile time -->
         </dependency>
 
+        <!-- Hibernate Validator is the reference implementation of the Bean Validation API -->
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>8.0.1.Final</version>
         </dependency>
+        <!-- Spring Boot Testcontainers integration for easier testing with containers -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+
 
 
     </dependencies>

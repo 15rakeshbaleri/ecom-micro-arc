@@ -14,13 +14,14 @@ public class InventoryService {
     @Autowired
     private InventoryRepository inventoryRepository;
 
-    @Transactional (readOnly = true)// read only transaction
+    @Transactional // NOT readOnly
     public boolean checkInventory(String skuCode, int quantity) {
-        int availableQuantity = 0;
         Inventory inventory = inventoryRepository.findBySkuCode(skuCode);
         if (inventory != null) {
-            availableQuantity= inventory.getQuantity();
+            int availableQuantity = inventory.getQuantity();
             if (availableQuantity >= quantity) {
+                inventory.setQuantity(availableQuantity - quantity);
+                inventoryRepository.save(inventory);
                 log.info("Inventory check for SKU {}: Available quantity is sufficient", skuCode);
                 return true;
             } else {
@@ -29,30 +30,10 @@ public class InventoryService {
             }
         }
         log.warn("Inventory check for SKU {}: SKU not found", skuCode);
-            return false;
-
-    }
-    @Transactional
-    public void reserveInventory(String skuCode, int quantity) {
-        Inventory inventory = inventoryRepository.findBySkuCode(skuCode);
-
-        if (inventory == null) {
-            log.error("Cannot reserve inventory: SKU {} not found", skuCode);
-            throw new RuntimeException("SKU " + skuCode + " not found in inventory");
-        }
-
-        int availableQuantity = inventory.getQuantity();
-
-        if (availableQuantity < quantity) {
-            log.warn("Cannot reserve inventory: Not enough stock for SKU {} (requested: {}, available: {})",
-                    skuCode, quantity, availableQuantity);
-            throw new RuntimeException("Insufficient stock for SKU: " + skuCode);
-        }
-
-        inventory.setQuantity(availableQuantity - quantity);
-        inventoryRepository.save(inventory);
-
-        log.info("Reserved {} units of SKU {}. Remaining: {}", quantity, skuCode, inventory.getQuantity());
+        return false;
     }
 
+
+    public boolean addOrUpdateInventory(String skuCode, int quantity) {
+    }
 }

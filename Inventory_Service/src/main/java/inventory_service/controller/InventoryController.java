@@ -1,6 +1,7 @@
 package inventory_service.controller;
 
 import inventory_service.DTO.BaseResponse;
+import inventory_service.DTO.InventoryRequest;
 import inventory_service.service.InventoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,18 @@ public class InventoryController {
 
         return ResponseEntity.ok(baseResponse);
     }
+    @PostMapping("/update")
+    public ResponseEntity<BaseResponse> addOrUpdateInventory(@RequestBody InventoryRequest request) {
+        boolean updated = inventoryService.addOrUpdateInventory(request.getSkuCode(), request.getQuantity());
 
+        BaseResponse baseResponse = new BaseResponse();
+        baseResponse.Status = updated ? "Success" : "Failure";
+        baseResponse.messageType = "Inventory Update";
+        baseResponse.message = updated ? "Inventory updated successfully" : "Failed to update inventory";
+        baseResponse.timeStamp = new Date();
+
+        return updated
+                ? ResponseEntity.ok(baseResponse)
+                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(baseResponse);
+    }
 }

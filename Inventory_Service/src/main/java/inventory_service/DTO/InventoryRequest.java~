@@ -1,0 +1,4 @@
+package inventory_service.DTO;
+
+public class InventoryRequest {
+}

@@ -19,7 +19,8 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring-boot.version>3.2.5</spring-boot.version>
+<!--        <spring-boot.version>3.2.5</spring-boot.version>-->
+
         <avro.plugin.version>1.11.3</avro.plugin.version>
     </properties>
 
@@ -145,6 +146,13 @@
             <version>5.3.2</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+            <version>7.6.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -153,7 +161,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
+
             </plugin>
 
             <!-- Avro Maven Plugin -->

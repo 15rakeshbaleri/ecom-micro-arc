@@ -25,30 +25,30 @@ public class NotificationService {
     public void listen(OrderPlacedEvent orderPlacedEvent){
         log.info("Got Message from order-placed topic {}", orderPlacedEvent);
         System.out.println(orderPlacedEvent);
-        MimeMessagePreparator messagePreparator = mimeMessage -> {
-            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
-            messageHelper.setFrom("springshop@email.com");
-            messageHelper.setTo(orderPlacedEvent.getEmail().toString());
-            messageHelper.setSubject(String.format("Your Order with OrderNumber %s is placed successfully", orderPlacedEvent.getOrderId()));
-            messageHelper.setText(String.format("""
-                            Hi %s,%s
-
-                            Your order with order number %s is now placed successfully.
-
-                            Best Regards
-                            Spring Shop
-                            """,
-                    orderPlacedEvent.getEmail(),
-                    orderPlacedEvent.getMessage(),
-                    orderPlacedEvent.getOrderId()));
-
-        };
-        try {
-            javaMailSender.send(messagePreparator);
-            log.info("Order Notifcation email sent!!");
-        } catch (MailException e) {
-            log.error("Exception occurred when sending mail", e);
-            throw new RuntimeException("Exception occurred when sending mail to springshop@email.com", e);
-        }
+//        MimeMessagePreparator messagePreparator = mimeMessage -> {
+//            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+//            messageHelper.setFrom("springshop@email.com");
+//            messageHelper.setTo(orderPlacedEvent.getEmail().toString());
+//            messageHelper.setSubject(String.format("Your Order with OrderNumber %s is placed successfully", orderPlacedEvent.getOrderId()));
+//            messageHelper.setText(String.format("""
+//                            Hi %s,%s
+//
+//                            Your order with order number %s is now placed successfully.
+//
+//                            Best Regards
+//                            Spring Shop
+//                            """,
+//                    orderPlacedEvent.getEmail(),
+//                    orderPlacedEvent.getMessage(),
+//                    orderPlacedEvent.getOrderId()));
+//
+//        };
+//        try {
+//            javaMailSender.send(messagePreparator);
+//            log.info("Order Notifcation email sent!!");
+//        } catch (MailException e) {
+//            log.error("Exception occurred when sending mail", e);
+//            throw new RuntimeException("Exception occurred when sending mail to springshop@email.com", e);
+//        }
     }
 }

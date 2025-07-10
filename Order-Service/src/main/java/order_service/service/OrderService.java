@@ -81,6 +81,12 @@ public class OrderService {
 
         order.setOrderItems(orderItems);
 
+
+
+
+
+
+
         //send Message to Kafka topic
 
         OrderPlacedEvent orderPlacedEvent = new OrderPlacedEvent();

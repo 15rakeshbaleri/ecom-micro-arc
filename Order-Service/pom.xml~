@@ -15,21 +15,21 @@
     <artifactId>Order-Service</artifactId>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <java.version>21</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<!--        <spring-boot.version>3.2.5</spring-boot.version>-->
+
+        <avro.plugin.version>1.11.3</avro.plugin.version>
     </properties>
+
     <repositories>
         <repository>
             <id>confluent</id>
             <url>https://packages.confluent.io/maven/</url>
         </repository>
-        <repository>
-            <id>confluent-jfrog</id>
-            <url>https://confluent.jfrog.io/artifactory/maven/</url>
-        </repository>
     </repositories>
-
 
     <dependencies>
         <!-- Spring Boot Web and JPA -->
@@ -73,7 +73,47 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
 
-        <!-- Testing dependencies -->
+        <!-- Resilience4j -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
+        </dependency>
+
+        <!-- Actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!-- Kafka -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-avro-serializer</artifactId>
+            <version>7.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.confluent</groupId>
+            <artifactId>kafka-schema-registry-client</artifactId>
+            <version>7.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>1.11.3</version>
+        </dependency>
+
+        <!-- Swagger -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-core</artifactId>
+            <version>2.2.11</version>
+        </dependency>
+
+        <!-- Testing -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -95,63 +135,33 @@
             <version>1.19.3</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- Rest Assured for API testing -->
-        <dependency>
-            <groupId>io.rest-assured</groupId>
-            <artifactId>rest-assured</artifactId>
-            <version>5.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-circuitbreaker-resilience4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.confluent</groupId>
-            <artifactId>kafka-avro-serializer</artifactId>
-            <version>7.6.0</version>
-        </dependency>
-        <dependency>
-            <groupId>io.confluent</groupId>
-            <artifactId>kafka-schema-registry-client</artifactId>
-            <version>7.6.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.avro</groupId>
-            <artifactId>avro</artifactId>
-            <version>1.11.3</version>
-        </dependency>
         <dependency>
             <groupId>org.springframework.kafka</groupId>
             <artifactId>spring-kafka-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-core</artifactId>
-            <version>2.2.11</version>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.3.2</version>
+            <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Spring Boot Maven Plugin -->
+            <!-- Spring Boot Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+
             </plugin>
+
+            <!-- Avro Maven Plugin -->
             <plugin>
                 <groupId>org.apache.avro</groupId>
                 <artifactId>avro-maven-plugin</artifactId>
+                <version>${avro.plugin.version}</version>
                 <executions>
                     <execution>
                         <id>schemas</id>

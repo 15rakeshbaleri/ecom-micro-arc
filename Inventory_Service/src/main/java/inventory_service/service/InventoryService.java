@@ -34,4 +34,19 @@ public class InventoryService {
     }
 
 
+    public boolean addOrUpdateInventory(String skuCode, int quantity) {
+        Inventory inventory = inventoryRepository.findBySkuCode(skuCode);
+        if (inventory == null) {
+            inventory = new Inventory();
+            inventory.setSkuCode(skuCode);
+            inventory.setQuantity(quantity);
+            log.info("Adding new inventory for SKU: {}", skuCode);
+        } else {
+            int updatedQuantity = inventory.getQuantity() + quantity;
+            inventory.setQuantity(updatedQuantity);
+            log.info("Updating inventory for SKU: {}. New quantity: {}", skuCode, updatedQuantity);
+        }
+        inventoryRepository.save(inventory);
+        return true;
+    }
 }

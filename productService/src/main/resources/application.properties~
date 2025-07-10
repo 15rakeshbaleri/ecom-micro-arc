@@ -1,0 +1,18 @@
+# Name of the application ? used for service discovery, logging, tracing, etc.
+spring.application.name=product-service
+
+# MongoDB connection URI
+# Connects to MongoDB running locally on port 27017
+# Uses the database 'product-service-db2' and authenticates against the 'admin' database
+spring.data.mongodb.uri=mongodb://localhost:27017/product-service-db2?authSource=admin
+
+# Port on which this Spring Boot application will run
+server.port=8082
+
+# Path where Swagger UI will be available
+# Accessible at: http://localhost:8082/swagger-ui.html
+springdoc.swagger-ui.path=/swagger-ui.html
+
+# Path where OpenAPI documentation (JSON) is exposed
+# Useful for tools like Postman, SwaggerHub, or API Gateway generators
+springdoc.api-docs.path=/api-docs

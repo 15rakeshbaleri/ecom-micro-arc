@@ -6,7 +6,7 @@ import order_service.model.OrderItems;
 import java.util.List;
 @Data
 public class OrderRequest {
-    private String Email;
+    private String email;
     private List<OrderItemsDto> orderItemsList;
 
 
